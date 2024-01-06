@@ -13,7 +13,10 @@ binding.initialize()
 binding.initialize_native_target()
 binding.initialize_native_asmprinter()
 
+# Must import this here because of those lines
+#  that get the target platform.
 from Ast.module import Module
+
 
 # Code representation of our AST.
 """

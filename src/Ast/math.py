@@ -7,7 +7,7 @@ class Operation(ExpressionNode):
 
     needs_parent = True
 
-    def __init__(self, pos, op: str, lhs: ExpressionNode, rhs: ExpressionNode):
+    def __init__(self, pos, op: str, lhs, rhs):
         super().__init__(pos)
 
         self.lhs = lhs

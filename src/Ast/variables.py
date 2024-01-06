@@ -63,7 +63,6 @@ class Assignment(ASTNode):
         if self.parent is None:
             return
 
-
         if self.is_declaration:
             self.parent.make_variable(func, self.var_name, self.var_type)
 
@@ -85,7 +84,8 @@ class VarRef(ExpressionNode):
         self.var_info = None
 
     def pre_eval(self, func):
-        # the parent to this node should only be None if we did something wrong!
+        # the parent to this node should only be None if we
+        #  did something wrong!
         if self.parent is None:
             errors.error("Cannot do a variable reference at a top level",
                          loc=self.position)
@@ -107,7 +107,8 @@ class VarRef(ExpressionNode):
             self.var_info = self.parent.get_variable(self)
 
         if self.var_info is None:
-            errors.error(f"Cannot find variable: '{self.var_name}' in current scope",
+            errors.error(f"Cannot find variable: '{self.var_name}' in " +
+                         "current scope",
                          loc=self.position)
             return
 

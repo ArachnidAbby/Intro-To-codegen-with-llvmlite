@@ -12,7 +12,7 @@ class FuncDef(ASTNode):
     __slots__ = ("builder", "func_name", "parent", "body", "parens",
                  "variables", "func_ir", "func_ty", "start_block")
 
-    needs_parent = True # this makes self.parent the module!
+    needs_parent = True  # this makes self.parent the current module!
 
     def __init__(self, pos, name, args, body):
         super().__init__(pos)
@@ -59,6 +59,9 @@ class FuncDef(ASTNode):
             return self.parent.get_variable(name)
 
     def _alloc_arguments(self):
+        if self.builder is None or self.func_ir is None:
+            return
+
         # To make our args function as normal variables,
         #  We must allocate them into memory. This makes them mutable
         for val, var_node in zip(self.func_ir.args, self.parens):
@@ -76,6 +79,7 @@ class FuncDef(ASTNode):
 
         # * Hint for exercise: Create a new KeyValuePair node for this
         # TODO/exercise: Make the AST use the real type of each argument
+
         # assume all arguments are i64. We only have one type right now!
         arg_types = [NumberType.ir_type for _ in self.parens]
 

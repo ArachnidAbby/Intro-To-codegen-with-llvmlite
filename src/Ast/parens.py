@@ -1,7 +1,8 @@
-from Ast.basenodes import ASTNode
+from Ast.basenodes import ExpressionNode
 
 
-class Parens(ASTNode):
+# Anything wrapped in `()`
+class Parens(ExpressionNode):
     __slots__ = ("children", "evaled_children", "parent")
 
     needs_parent = True
@@ -26,7 +27,17 @@ class Parens(ASTNode):
                 child.parent = self.parent
             child.pre_eval(func)
 
+        if len(self.children) == 1:
+            self.ret_type = self.evaled_children[0]
+
     def eval(self, func):
         for child in self:
             val = child.eval(func)
             self.evaled_children.append(val)
+
+        # return contents if this is a single element parenth block
+        #  useful ex: `8 * (7 + 1)`
+        if len(self.children) == 1:
+            return self.evaled_children[0]
+
+        # TODO/exercise: Create a tuple datatype and instantiate it here!

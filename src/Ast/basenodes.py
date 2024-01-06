@@ -15,21 +15,26 @@ srcPosition = tuple[int, int, int, str]
 
 # * Combine together several source positions into a single one.
 def merge_src_positions(positions: list[srcPosition]) -> srcPosition:
-    # ! I will not implement this. I do not have src positions
+    # TODO/exercise: implement this for your compiler.
+    # TODO/exercise:  This example has no parser or src positions!
     return positions[0]
 
 
 class VariableInfo(NamedTuple):
     var_name: str
     ret_type: Type
-    ptr: ir.Instruction
+    ptr: ir.Instruction | ir.AllocaInstr | ir.Function
+
     # It is recommended to actually use a Function type.
     #  This makes things like the `.` operator easier
+    #  In whatever language you are making. This is what I do
+    #  in my lang.
     is_function: bool
 
 
+# ? You may want this to be an Abstract Base Class. You decide!
 class ASTNode:
-    __slots__ = ("_pos")
+    __slots__ = ("_pos",)
 
     # useful properties
     needs_parent = False
@@ -39,6 +44,7 @@ class ASTNode:
 
     # * Multiple passes thru the AST.
     # *  You could want more too!
+    # *  Commonly you have 1-2 (or more) for symbol declaration
     def pre_eval(self, func):
         pass
 
@@ -75,3 +81,4 @@ class ExpressionNode(ASTNode):
     # * We won't implement this right now
     def get_as_type(self, func) -> Optional[Type]:
         errors.error("Not a valid type signature", loc=self.position)
+        return None

@@ -1,6 +1,4 @@
-from typing import NamedTuple, Optional
-
-from llvmlite import ir
+from typing import Optional
 
 from .basenodes import ASTNode, VariableInfo
 
@@ -17,7 +15,6 @@ class Block(ASTNode):
         if children is None:
             self.children = []
         else:
-
             # Handle the nesting
             for child in children:
                 if child.needs_parent:

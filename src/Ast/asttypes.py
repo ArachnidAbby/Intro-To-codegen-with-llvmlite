@@ -94,6 +94,7 @@ class NumberType(Type):
                 # *  Like a float being added to an int should return a float
                 return self
             case "eq" | "lt" | "gt":
+                # TODO/exercise: add a bool type and use it here instead :)
                 return self
             case _:
                 errors.error("Operation not supported for the 'Number' type")
@@ -113,8 +114,8 @@ class NumberType(Type):
 
         return func.builder.sub(lhs_evaled, rhs_evaled)
 
-    # ! Division by zero can still occur. This can cause an error.
-    # !  how should the compiler handle it? Up to you!
+    # TODO/exercise: Division by zero can still occur. This can cause an error.
+    # TODO/exercise:  how should the compiler handle it? Up to you!
     def op_div(self, func, lhs, rhs) -> ir.Instruction:
         lhs_evaled = lhs.eval(func)
         rhs_evaled = rhs.eval(func)
