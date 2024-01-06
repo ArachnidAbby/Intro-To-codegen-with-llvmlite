@@ -1,5 +1,5 @@
 import errors
-from Ast.basenodes import ASTNode, ExpressionNode, VariableInfo
+from Ast.basenodes import ASTNode, ExpressionNode
 
 
 class Assignment(ASTNode):
@@ -47,6 +47,8 @@ class Assignment(ASTNode):
         # get the type of the variable
         if self.is_declaration:
             self.var_type = self.value.ret_type
+            self.parent.make_variable(func, self.var_name, self.var_type)
+            self.var_name.pre_eval(func)
         else:
             self.var_name.pre_eval(func)
             self.var_type = self.var_name.ret_type
@@ -62,9 +64,6 @@ class Assignment(ASTNode):
             return
         if self.parent is None:
             return
-
-        if self.is_declaration:
-            self.parent.make_variable(func, self.var_name, self.var_type)
 
         # use asttype's `store` method.
         self.var_type.store(func, self.var_name, self.value)
@@ -93,7 +92,13 @@ class VarRef(ExpressionNode):
 
         self.var_info = self.parent.get_variable(self)
 
-        if self.var_info is not None:
+        if self.var_info is None:
+            errors.error(f"Cannot find variable: '{self.var_name}' in " +
+                         "current scope",
+                         loc=self.position)
+            return
+
+        if self.var_info is not None and not self.var_info.is_function:
             self.ret_type = self.var_info.ret_type
 
     def eval(self, func):
@@ -103,13 +108,10 @@ class VarRef(ExpressionNode):
         return func.builder.load(ptr)
 
     def as_ptr(self, func):
-        if self.var_info is None and self.parent is not None:
-            self.var_info = self.parent.get_variable(self)
+        if self._ptr is not None:
+            return self._ptr
 
         if self.var_info is None:
-            errors.error(f"Cannot find variable: '{self.var_name}' in " +
-                         "current scope",
-                         loc=self.position)
             return
 
         if self.var_info.is_function:

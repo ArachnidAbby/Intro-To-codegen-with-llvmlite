@@ -28,7 +28,7 @@ class Parens(ExpressionNode):
             child.pre_eval(func)
 
         if len(self.children) == 1:
-            self.ret_type = self.evaled_children[0]
+            self.ret_type = self.children[0].ret_type
 
     def eval(self, func):
         for child in self:

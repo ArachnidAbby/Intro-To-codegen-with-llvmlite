@@ -43,7 +43,7 @@ class FuncDef(ASTNode):
         # TODO/exercise: look into using `builder.goto_entry_block(block)`
         current_block = self.builder.block
         self.builder.position_at_start(self.start_block)
-        ptr = self.builder.alloca(typ.ir_type)
+        ptr = self.builder.alloca(typ.ir_type, name=name)
         self.builder.position_at_end(current_block)
         return ptr
 
@@ -136,6 +136,7 @@ class FuncCall(ExpressionNode):
 
         self.args.pre_eval(func)
         self.func_info = self.parent.get_variable(self.func_name)
+        self.ret_type = NumberType()
         if self.func_info is None or not self.func_info.is_function:
             errors.error("Function not found",
                          loc=self.func_name.position)
