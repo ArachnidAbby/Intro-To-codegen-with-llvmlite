@@ -8,7 +8,7 @@ This is *technically* turing complete (I think). It is missing features a langua
 There are of course *several* `TODO/exercise` comments left in the code as challenges for the
 reader.
 
-> This was shared on the `Compilers and Interpreters` discord server on `01/05/2024 (M/D/Y)`
+> This was shared on the `Compilers and Interpreters` discord server on `01/06/2024 (M/D/Y)`
 > If you see this before that date, come join us to learn more!
 
 ## Requirements
